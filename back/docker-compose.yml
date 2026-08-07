@@ -4,22 +4,23 @@ services:
     container_name: mdd-mysql
     restart: unless-stopped
     environment:
-      MYSQL_DATABASE: ${DB_NAME:-mdd}
-      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD:-root}
-      MYSQL_USER: ${DB_USERNAME:-mdd_user}
-      MYSQL_PASSWORD: ${DB_PASSWORD:-mdd_password}
+      MYSQL_DATABASE: ${MYSQL_DATABASE:-mdd}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:-root}
+      MYSQL_USER: ${MYSQL_USER:-mdd_user}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD:-mdd_password}
     ports:
-      - "3306:3306"
+      # Port hôte surchargeable (ex. MYSQL_HOST_PORT=3307) si 3306 est déjà occupé
+      - "${MYSQL_HOST_PORT:-3306}:3306"
     volumes:
       - mdd_mysql_data:/var/lib/mysql
+      # Scripts joués uniquement à la première initialisation du volume
       - ./db/init:/docker-entrypoint-initdb.d:ro
     command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
     healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-p${DB_ROOT_PASSWORD:-root}"]
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-p${MYSQL_ROOT_PASSWORD:-root}"]
       interval: 10s
       timeout: 5s
       retries: 5
 
 volumes:
   mdd_mysql_data:
-
