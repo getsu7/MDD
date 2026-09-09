@@ -1,6 +1,9 @@
 package com.openclassrooms.mddapi.config;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.nimbusds.jose.jwk.source.ImmutableSecret;
+import com.openclassrooms.mddapi.security.ProblemDetailAccessDeniedHandler;
+import com.openclassrooms.mddapi.security.ProblemDetailAuthenticationEntryPoint;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -17,8 +20,6 @@ import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.security.oauth2.jwt.JwtEncoder;
 import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
 import org.springframework.security.oauth2.jwt.NimbusJwtEncoder;
-import org.springframework.security.oauth2.server.resource.web.access.BearerTokenAccessDeniedHandler;
-import org.springframework.security.oauth2.server.resource.web.BearerTokenAuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
@@ -54,7 +55,7 @@ public class SecurityConfig {
     }
 
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+    public SecurityFilterChain securityFilterChain(HttpSecurity http, ObjectMapper objectMapper) throws Exception {
         http
                 .csrf(AbstractHttpConfigurer::disable)
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
@@ -68,8 +69,12 @@ public class SecurityConfig {
                 // Activation du Resource Server : valide automatiquement les JWT Bearer entrants
                 .oauth2ResourceServer(oauth2 -> oauth2
                         .jwt(jwt -> {})
-                        .authenticationEntryPoint(new BearerTokenAuthenticationEntryPoint())
-                        .accessDeniedHandler(new BearerTokenAccessDeniedHandler()))
+                        .authenticationEntryPoint(new ProblemDetailAuthenticationEntryPoint(objectMapper))
+                        .accessDeniedHandler(new ProblemDetailAccessDeniedHandler(objectMapper)))
+                // Mêmes réponses RFC 7807 pour les requêtes hors Resource Server
+                .exceptionHandling(ex -> ex
+                        .authenticationEntryPoint(new ProblemDetailAuthenticationEntryPoint(objectMapper))
+                        .accessDeniedHandler(new ProblemDetailAccessDeniedHandler(objectMapper)))
                 .httpBasic(AbstractHttpConfigurer::disable)
                 .formLogin(AbstractHttpConfigurer::disable);
 
