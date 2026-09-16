@@ -55,6 +55,8 @@ front/node_modules/
 front/dist/
 front/.angular/cache/
 front/coverage/
+front/playwright-report/
+front/test-results/
 
 # ===========================
 # Divers
