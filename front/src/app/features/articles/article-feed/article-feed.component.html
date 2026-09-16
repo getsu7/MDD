@@ -1,0 +1,60 @@
+<app-header></app-header>
+
+<main class="feed">
+  <div class="feed__actions">
+    <a mat-raised-button color="primary" routerLink="/articles/create" class="feed__create">
+      Créer un article
+    </a>
+
+    <button
+      mat-button
+      type="button"
+      class="feed__sort"
+      (click)="toggleSort()"
+      [attr.aria-label]="
+        sortDirection === 'desc'
+          ? 'Trier par date croissante'
+          : 'Trier par date décroissante'
+      "
+    >
+      Trier par
+      <mat-icon>{{ sortDirection === 'desc' ? 'arrow_downward' : 'arrow_upward' }}</mat-icon>
+    </button>
+  </div>
+
+  <p class="feed__error" *ngIf="error" role="alert">{{ error }}</p>
+
+  <div class="feed__loader" *ngIf="loading && articles.length === 0">
+    <mat-spinner diameter="40"></mat-spinner>
+  </div>
+
+  <ng-container *ngIf="!loading || articles.length > 0">
+    <p class="feed__empty" *ngIf="articles.length === 0 && !error">
+      Votre fil est vide : abonnez-vous à des thèmes pour voir apparaître des articles.
+      <a routerLink="/topics">Découvrir les thèmes</a>
+    </p>
+
+    <ul class="feed__list">
+      <li *ngFor="let article of articles; trackBy: trackById">
+        <a class="article-card" [routerLink]="['/articles', article.id]">
+          <mat-card class="article-card__surface">
+            <h2 class="article-card__title">{{ article.title }}</h2>
+
+            <p class="article-card__meta">
+              {{ article.createdAt | date: 'dd/MM/yyyy' }} · {{ article.authorUsername }}
+            </p>
+
+            <p class="article-card__excerpt">{{ article.content }}</p>
+          </mat-card>
+        </a>
+      </li>
+    </ul>
+  </ng-container>
+
+  <div class="feed__more" *ngIf="hasMore">
+    <button mat-stroked-button type="button" (click)="loadMore()" [disabled]="loading">
+      {{ loading ? 'Chargement…' : 'Voir plus d’articles' }}
+    </button>
+  </div>
+</main>
+

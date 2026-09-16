@@ -1,0 +1,47 @@
+@use '../../../../styles/variables' as v;
+@use '../../../../styles/form-field';
+
+.article-create {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 16px 16px 64px;
+
+  &__header {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    margin: 0 0 32px;
+  }
+
+  &__title {
+    margin: 0;
+    font-size: 1.5rem;
+    font-weight: 700;
+  }
+
+  &__form {
+    display: flex;
+    flex-direction: column;
+  }
+
+  &__error {
+    margin: 8px 0 16px;
+    padding: 12px 16px;
+    border-radius: 4px;
+    background: rgba(v.$mdd-error, 0.08);
+    color: v.$mdd-error;
+    font-size: 0.875rem;
+  }
+
+  &__submit {
+    align-self: center;
+    min-width: 200px;
+    height: 48px;
+    margin-top: 8px;
+  }
+
+  @media (min-width: v.$mdd-breakpoint-desktop) {
+    padding: 24px 24px 64px;
+  }
+}
+

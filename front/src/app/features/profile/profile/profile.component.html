@@ -1,0 +1,116 @@
+<app-header></app-header>
+
+<main class="profile">
+  <h1 class="profile__title">Profil utilisateur</h1>
+
+  <div class="profile__loader" *ngIf="loading">
+    <mat-spinner diameter="40"></mat-spinner>
+  </div>
+
+  <p class="profile__error" *ngIf="error" role="alert">{{ error }}</p>
+
+  <ng-container *ngIf="user && !loading">
+    <form class="profile__form" [formGroup]="form" (ngSubmit)="save()" novalidate>
+      <label class="mdd-field">
+        <span class="mdd-field__label">Nom d'utilisateur</span>
+        <span class="mdd-field__control">
+          <input class="mdd-field__input" formControlName="username" autocomplete="username" required />
+        </span>
+        <span class="mdd-field__error" *ngIf="form.controls.username.hasError('required') && form.controls.username.touched">
+          Le nom d'utilisateur est obligatoire.
+        </span>
+        <span
+          class="mdd-field__error"
+          *ngIf="
+            form.controls.username.hasError('minlength') ||
+            form.controls.username.hasError('maxlength')
+          "
+        >
+          Le nom d'utilisateur doit contenir entre 3 et 100 caractères.
+        </span>
+      </label>
+
+      <label class="mdd-field">
+        <span class="mdd-field__label">Adresse e-mail</span>
+        <span class="mdd-field__control">
+          <input class="mdd-field__input" type="email" formControlName="email" autocomplete="email" required />
+        </span>
+        <span class="mdd-field__error" *ngIf="form.controls.email.hasError('required') && form.controls.email.touched">
+          L'adresse e-mail est obligatoire.
+        </span>
+        <span class="mdd-field__error" *ngIf="form.controls.email.hasError('email')">
+          Format d'adresse e-mail invalide.
+        </span>
+      </label>
+
+      <label class="mdd-field">
+        <span class="mdd-field__label">Mot de passe</span>
+        <span class="mdd-field__control">
+          <input
+            class="mdd-field__input"
+            type="password"
+            formControlName="password"
+            autocomplete="new-password"
+            placeholder="••••••••"
+          />
+        </span>
+        <span
+          class="mdd-field__error"
+          *ngIf="
+            form.controls.password.hasError('minlength') ||
+            form.controls.password.hasError('pattern')
+          "
+        >
+          {{ passwordHint }}
+        </span>
+        <span class="mdd-field__hint" *ngIf="form.controls.password.valid">
+          Laissez vide pour conserver votre mot de passe actuel.
+        </span>
+      </label>
+
+      <p class="profile__error" *ngIf="serverError" role="alert">{{ serverError }}</p>
+
+      <button
+        mat-raised-button
+        color="primary"
+        type="submit"
+        class="profile__submit"
+        [disabled]="saving"
+      >
+        {{ saving ? 'Enregistrement…' : 'Sauvegarder' }}
+      </button>
+    </form>
+
+    <mat-divider></mat-divider>
+
+    <section class="subscriptions">
+      <h2 class="subscriptions__title">Abonnements</h2>
+
+      <p class="subscriptions__empty" *ngIf="subscriptions.length === 0">
+        Vous ne suivez aucun thème pour le moment.
+        <a routerLink="/topics">Découvrir les thèmes</a>
+      </p>
+
+      <ul class="subscriptions__list">
+        <li *ngFor="let topic of subscriptions; trackBy: trackById">
+          <mat-card class="subscription-card">
+            <h3 class="subscription-card__title">{{ topic.title }}</h3>
+            <p class="subscription-card__description">{{ topic.description }}</p>
+            <div class="subscription-card__action">
+              <button
+                mat-raised-button
+                color="primary"
+                type="button"
+                (click)="unsubscribe(topic)"
+                [disabled]="isPending(topic)"
+              >
+                Se désabonner
+              </button>
+            </div>
+          </mat-card>
+        </li>
+      </ul>
+    </section>
+  </ng-container>
+</main>
+

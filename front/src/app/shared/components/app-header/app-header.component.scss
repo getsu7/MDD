@@ -1,0 +1,109 @@
+@use '../../../../styles/variables' as v;
+
+.app-header {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 0 16px;
+  background: #fff;
+  border-bottom: 1px solid v.$mdd-border;
+
+  &__brand {
+    display: flex;
+    align-items: center;
+    line-height: 0;
+  }
+
+  &__logo {
+    height: 32px;
+    width: auto;
+  }
+
+  &__nav {
+    display: none;
+    align-items: center;
+    gap: 4px;
+  }
+
+  &__burger {
+    display: inline-flex;
+  }
+
+  &__link--active {
+    color: v.$mdd-primary;
+    font-weight: 600;
+  }
+
+  &__logout {
+    color: v.$mdd-error;
+  }
+
+  @media (min-width: v.$mdd-breakpoint-desktop) {
+    padding: 0 32px;
+
+    &__nav {
+      display: flex;
+    }
+
+    &__burger {
+      display: none;
+    }
+
+    &__logo {
+      height: 40px;
+    }
+  }
+}
+
+.app-header__drawer {
+  position: fixed;
+  inset: 0;
+  z-index: 20;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.app-header__backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.4);
+}
+
+.app-header__panel {
+  position: relative;
+  width: 60%;
+  max-width: 280px;
+  height: 100%;
+  background: v.$mdd-surface;
+  box-shadow: -2px 0 12px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  padding: 24px 24px 24px;
+}
+
+.app-header__panel-item {
+  background: none;
+  border: none;
+  padding: 10px 0;
+  font-size: 1.0625rem;
+  font-family: inherit;
+  color: v.$mdd-text;
+  text-align: right;
+  cursor: pointer;
+
+  &--logout {
+    color: v.$mdd-error;
+    font-weight: 700;
+  }
+}
+
+.app-header__panel-profile {
+  margin-top: auto;
+  color: v.$mdd-text;
+}
+

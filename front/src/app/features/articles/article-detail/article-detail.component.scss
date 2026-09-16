@@ -1,0 +1,130 @@
+@use '../../../../styles/variables' as v;
+@use '../../../../styles/form-field';
+
+.article-detail {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 16px 16px 64px;
+
+  &__loader {
+    display: flex;
+    justify-content: center;
+    padding: 48px 0;
+  }
+
+  &__error {
+    padding: 12px 16px;
+    border-radius: 4px;
+    background: rgba(v.$mdd-error, 0.08);
+    color: v.$mdd-error;
+  }
+
+  &__header {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    margin: 0 0 8px;
+  }
+
+  &__title {
+    margin: 0;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: v.$mdd-text;
+  }
+
+  &__meta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+    margin: 0 0 24px;
+    font-size: 0.875rem;
+    color: v.$mdd-text-muted;
+  }
+
+  &__topic {
+    padding: 2px 12px;
+    border-radius: 999px;
+    background: rgba(v.$mdd-primary, 0.1);
+    color: v.$mdd-primary;
+    font-weight: 500;
+  }
+
+  &__content {
+    margin: 0 0 32px;
+    line-height: 1.7;
+    white-space: pre-line;
+    color: v.$mdd-text;
+  }
+
+  @media (min-width: v.$mdd-breakpoint-desktop) {
+    padding: 24px 24px 64px;
+
+    &__title {
+      font-size: 2rem;
+    }
+  }
+}
+
+.comments {
+  padding-top: 24px;
+
+  &__title {
+    margin: 0 0 16px;
+    font-size: 1.125rem;
+    font-weight: 600;
+  }
+
+  &__empty {
+    margin: 0 0 16px;
+    color: v.$mdd-text-muted;
+    font-size: 0.875rem;
+  }
+
+  &__list {
+    list-style: none;
+    margin: 0 0 24px;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  &__item {
+    padding: 12px 16px;
+    border-radius: 8px;
+    background: v.$mdd-background;
+    border: 1px solid v.$mdd-border;
+    line-height: 1.5;
+  }
+
+  &__author {
+    font-weight: 600;
+    color: v.$mdd-text;
+
+    &::after {
+      content: ' : ';
+    }
+  }
+
+  &__content {
+    color: v.$mdd-text;
+    white-space: pre-line;
+  }
+
+  &__form {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  &__field {
+    flex: 1;
+  }
+
+  &__send {
+    margin-top: 8px;
+  }
+}
+

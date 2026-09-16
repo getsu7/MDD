@@ -1,0 +1,119 @@
+@use '../../../../styles/variables' as v;
+@use '../../../../styles/form-field';
+
+.profile {
+  max-width: v.$mdd-content-max-width;
+  margin: 0 auto;
+  padding: 24px 16px 64px;
+
+  &__title {
+    margin: 0 0 32px;
+    font-size: 1.5rem;
+    font-weight: 700;
+  }
+
+  &__loader {
+    display: flex;
+    justify-content: center;
+    padding: 48px 0;
+  }
+
+  &__error {
+    margin: 8px 0 16px;
+    padding: 12px 16px;
+    border-radius: 4px;
+    background: rgba(v.$mdd-error, 0.08);
+    color: v.$mdd-error;
+    font-size: 0.875rem;
+  }
+
+  &__form {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    max-width: v.$mdd-form-max-width;
+    margin: 0 auto 32px;
+  }
+
+  &__submit {
+    align-self: center;
+    min-width: 160px;
+    height: 40px;
+    margin-top: 8px;
+  }
+
+  @media (min-width: v.$mdd-breakpoint-desktop) {
+    padding: 32px 24px 64px;
+  }
+}
+
+.subscriptions {
+  padding-top: 32px;
+
+  &__title {
+    margin: 0 0 24px;
+    font-size: 1.25rem;
+    font-weight: 700;
+  }
+
+  &__empty {
+    text-align: center;
+    color: v.$mdd-text-muted;
+
+    a {
+      display: block;
+      margin-top: 8px;
+      color: v.$mdd-primary;
+      font-weight: 500;
+    }
+  }
+
+  &__list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 16px;
+
+    @media (min-width: v.$mdd-breakpoint-desktop) {
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 24px;
+    }
+  }
+}
+
+.subscription-card {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  background: v.$mdd-background;
+  border: none;
+  border-radius: 12px;
+  box-shadow: none;
+
+  &__title {
+    margin: 0 0 8px;
+    font-size: 1.125rem;
+    font-weight: 600;
+  }
+
+  &__description {
+    flex: 1;
+    margin: 0 0 16px;
+    color: v.$mdd-text-muted;
+    line-height: 1.5;
+  }
+
+  &__action {
+    display: flex;
+    justify-content: center;
+
+    button {
+      min-width: 140px;
+      height: 40px;
+    }
+  }
+}
+

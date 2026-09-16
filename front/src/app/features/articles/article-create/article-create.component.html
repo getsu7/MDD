@@ -1,0 +1,66 @@
+<app-header></app-header>
+
+<main class="article-create">
+  <div class="article-create__header">
+    <app-back-button fallback="/articles"></app-back-button>
+    <h1 class="article-create__title">Créer un nouvel article</h1>
+  </div>
+
+  <form class="article-create__form" [formGroup]="form" (ngSubmit)="submit()" novalidate>
+    <label class="mdd-field">
+      <span class="mdd-field__control">
+        <select class="mdd-field__input" formControlName="topicId" required>
+          <option [ngValue]="null" disabled hidden>Sélectionner un thème</option>
+          <option *ngFor="let topic of topics" [ngValue]="topic.id">
+            {{ topic.title }}
+          </option>
+        </select>
+      </span>
+      <span class="mdd-field__error" *ngIf="form.controls.topicId.hasError('required') && form.controls.topicId.touched">
+        Le thème est obligatoire.
+      </span>
+    </label>
+
+    <label class="mdd-field">
+      <span class="mdd-field__control">
+        <input class="mdd-field__input" placeholder="Titre de l'article" formControlName="title" required />
+      </span>
+      <span class="mdd-field__error" *ngIf="form.controls.title.hasError('required') && form.controls.title.touched">
+        Le titre est obligatoire.
+      </span>
+      <span class="mdd-field__error" *ngIf="form.controls.title.hasError('maxlength')">
+        Le titre ne peut pas dépasser 255 caractères.
+      </span>
+    </label>
+
+    <label class="mdd-field">
+      <span class="mdd-field__control">
+        <textarea
+          class="mdd-field__input"
+          placeholder="Contenu de l'article"
+          formControlName="content"
+          rows="10"
+          required
+        ></textarea>
+      </span>
+      <span class="mdd-field__error" *ngIf="form.controls.content.hasError('required') && form.controls.content.touched">
+        Le contenu est obligatoire.
+      </span>
+    </label>
+
+    <p class="article-create__error" *ngIf="serverError" role="alert">
+      {{ serverError }}
+    </p>
+
+    <button
+      mat-raised-button
+      color="primary"
+      type="submit"
+      class="article-create__submit"
+      [disabled]="submitting"
+    >
+      {{ submitting ? 'Publication…' : 'Créer' }}
+    </button>
+  </form>
+</main>
+

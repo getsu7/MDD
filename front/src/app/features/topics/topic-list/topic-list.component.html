@@ -1,0 +1,39 @@
+<app-header></app-header>
+
+<main class="topics">
+  <h1 class="topics__title">Thèmes</h1>
+
+  <div class="topics__loader" *ngIf="loading">
+    <mat-spinner diameter="40"></mat-spinner>
+  </div>
+
+  <p class="topics__error" *ngIf="error" role="alert">{{ error }}</p>
+
+  <ul class="topics__list" *ngIf="!loading && !error">
+    <li *ngFor="let topic of topics; trackBy: trackById">
+      <mat-card class="topic-card">
+        <h2 class="topic-card__title">{{ topic.title }}</h2>
+        <p class="topic-card__description">{{ topic.description }}</p>
+
+        <div class="topic-card__action">
+          <span class="topic-card__badge" *ngIf="isSubscribed(topic); else subscribeButton">
+            <mat-icon>check</mat-icon> Déjà abonné
+          </span>
+
+          <ng-template #subscribeButton>
+            <button
+              mat-raised-button
+              color="primary"
+              type="button"
+              (click)="subscribe(topic)"
+              [disabled]="isPending(topic)"
+            >
+              S'abonner
+            </button>
+          </ng-template>
+        </div>
+      </mat-card>
+    </li>
+  </ul>
+</main>
+

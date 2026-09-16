@@ -1,0 +1,59 @@
+<mat-toolbar class="app-header">
+  <a class="app-header__brand" [routerLink]="showNav ? '/articles' : '/'">
+    <img src="assets/logo_p6.png" alt="MDD — Monde de Dev" class="app-header__logo" />
+  </a>
+
+  <ng-container *ngIf="showNav">
+    <nav class="app-header__nav">
+      <button mat-button class="app-header__logout" (click)="logout()">
+        Se déconnecter
+      </button>
+      <a mat-button routerLink="/articles" routerLinkActive="app-header__link--active">
+        Articles
+      </a>
+      <a mat-button routerLink="/topics" routerLinkActive="app-header__link--active">
+        Thèmes
+      </a>
+      <a
+        mat-icon-button
+        routerLink="/profile"
+        routerLinkActive="app-header__link--active"
+        aria-label="Mon profil"
+        matTooltip="Mon profil"
+      >
+        <mat-icon>account_circle</mat-icon>
+      </a>
+    </nav>
+
+    <button
+      mat-icon-button
+      class="app-header__burger"
+      (click)="openMenu()"
+      aria-label="Ouvrir le menu"
+    >
+      <mat-icon>menu</mat-icon>
+    </button>
+  </ng-container>
+</mat-toolbar>
+
+<div class="app-header__drawer" *ngIf="menuOpen">
+  <div class="app-header__backdrop" (click)="closeMenu()"></div>
+  <nav class="app-header__panel">
+    <button type="button" class="app-header__panel-item app-header__panel-item--logout" (click)="logout()">
+      Se déconnecter
+    </button>
+    <a class="app-header__panel-item" routerLink="/articles" (click)="closeMenu()">Articles</a>
+    <a class="app-header__panel-item" routerLink="/topics" (click)="closeMenu()">Thèmes</a>
+
+    <a
+      mat-icon-button
+      class="app-header__panel-profile"
+      routerLink="/profile"
+      aria-label="Mon profil"
+      (click)="closeMenu()"
+    >
+      <mat-icon>account_circle</mat-icon>
+    </a>
+  </nav>
+</div>
+

@@ -1,0 +1,69 @@
+<div class="auth-page">
+  <header class="auth-page__header">
+    <app-back-button fallback="/"></app-back-button>
+  </header>
+
+  <main class="auth-page__content">
+    <img src="assets/logo_p6.png" alt="MDD — Monde de Dev" class="auth-page__logo" />
+    <h1 class="auth-page__title">Se connecter</h1>
+
+    <form class="auth-form" [formGroup]="form" (ngSubmit)="submit()" novalidate>
+      <label class="mdd-field">
+        <span class="mdd-field__label">E-mail ou nom d'utilisateur</span>
+        <span class="mdd-field__control">
+          <input
+            class="mdd-field__input"
+            formControlName="identifier"
+            autocomplete="username"
+            required
+          />
+        </span>
+        <span
+          class="mdd-field__error"
+          *ngIf="form.controls.identifier.hasError('required') && form.controls.identifier.touched"
+        >
+          L'identifiant est obligatoire.
+        </span>
+      </label>
+
+      <label class="mdd-field">
+        <span class="mdd-field__label">Mot de passe</span>
+        <span class="mdd-field__control">
+          <input
+            class="mdd-field__input"
+            type="password"
+            formControlName="password"
+            autocomplete="current-password"
+            required
+          />
+        </span>
+        <span
+          class="mdd-field__error"
+          *ngIf="form.controls.password.hasError('required') && form.controls.password.touched"
+        >
+          Le mot de passe est obligatoire.
+        </span>
+      </label>
+
+      <p class="auth-form__error" *ngIf="serverError" role="alert">
+        {{ serverError }}
+      </p>
+
+      <button
+        mat-raised-button
+        color="primary"
+        type="submit"
+        class="auth-form__submit"
+        [disabled]="submitting"
+      >
+        <mat-spinner *ngIf="submitting" diameter="20"></mat-spinner>
+        <span *ngIf="!submitting">Se connecter</span>
+      </button>
+
+      <p class="auth-form__switch">
+        Pas encore de compte ? <a routerLink="/register">S'inscrire</a>
+      </p>
+    </form>
+  </main>
+</div>
+

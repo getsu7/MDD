@@ -1,0 +1,77 @@
+<app-header></app-header>
+
+<main class="article-detail">
+  <div class="article-detail__header">
+    <app-back-button fallback="/articles"></app-back-button>
+    <h1 class="article-detail__title" *ngIf="article as current">{{ current.title }}</h1>
+  </div>
+
+  <div class="article-detail__loader" *ngIf="loading">
+    <mat-spinner diameter="40"></mat-spinner>
+  </div>
+
+  <p class="article-detail__error" *ngIf="error" role="alert">{{ error }}</p>
+
+  <ng-container *ngIf="article as current">
+    <article class="article-detail__body">
+      <p class="article-detail__meta">
+        {{ current.createdAt | date: 'dd/MM/yyyy' }} · {{ current.authorUsername }}
+        <span class="article-detail__topic">{{ current.topicTitle }}</span>
+      </p>
+
+      <p class="article-detail__content">{{ current.content }}</p>
+    </article>
+
+    <mat-divider></mat-divider>
+
+    <section class="comments">
+      <h2 class="comments__title">Commentaires</h2>
+
+      <p class="comments__empty" *ngIf="comments.length === 0">
+        Aucun commentaire pour le moment. Soyez le premier à réagir !
+      </p>
+
+      <ul class="comments__list">
+        <li class="comments__item" *ngFor="let comment of comments; trackBy: trackById">
+          <span class="comments__author">{{ comment.authorUsername }}</span>
+          <span class="comments__content">{{ comment.content }}</span>
+        </li>
+      </ul>
+
+      <form class="comments__form" [formGroup]="commentForm" (ngSubmit)="submitComment()" novalidate>
+        <label class="mdd-field comments__field">
+          <span class="mdd-field__control">
+            <textarea
+              class="mdd-field__input"
+              placeholder="Écrivez ici votre commentaire"
+              formControlName="content"
+              rows="2"
+              required
+            ></textarea>
+          </span>
+          <span
+            class="mdd-field__error"
+            *ngIf="commentForm.controls.content.hasError('required') && commentForm.controls.content.touched"
+          >
+            Le commentaire ne peut pas être vide.
+          </span>
+          <span class="mdd-field__error" *ngIf="commentForm.controls.content.hasError('maxlength')">
+            Le commentaire est trop long (2000 caractères maximum).
+          </span>
+        </label>
+
+        <button
+          mat-icon-button
+          color="primary"
+          type="submit"
+          class="comments__send"
+          aria-label="Envoyer le commentaire"
+          [disabled]="sending"
+        >
+          <mat-icon>send</mat-icon>
+        </button>
+      </form>
+    </section>
+  </ng-container>
+</main>
+
